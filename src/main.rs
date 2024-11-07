@@ -74,7 +74,7 @@ fn audio_file_reader(file: &dyn AsRef<Path>) -> BufReader<File> {
 
     if !path.exists() {
         path = match std::env::current_exe() {
-            Ok(exe) => exe.parent().unwrap().join("share/eventsfx/audio").join(file),
+            Ok(exe) => exe.parent().unwrap().parent().unwrap().join("share/eventsfx/audio").join(file),
             Err(_) => Path::new("audio").join(file),
         }
     }
@@ -84,7 +84,7 @@ fn audio_file_reader(file: &dyn AsRef<Path>) -> BufReader<File> {
     }
 
     if !path.exists() {
-        panic!("unable to locate audio file: {}", &file.display())
+        panic!("unable to locate audio file: {}", &file.display()) 
     }
 
     BufReader::new(
