@@ -73,7 +73,10 @@ fn audio_file_reader(file: &dyn AsRef<Path>) -> BufReader<File> {
     let mut path = config_dir().unwrap().join("eventsfx").join(file);
 
     if !path.exists() {
-        path = Path::new("audio").join(file);
+        path = match std::env::current_exe() {
+            Ok(exe) => exe.parent().unwrap().join("audio").join(file),
+            Err(_) => Path::new("audio").join(file),
+        }
     }
 
     if !path.exists() {
