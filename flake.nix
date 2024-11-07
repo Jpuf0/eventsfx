@@ -18,7 +18,7 @@
           inherit system;
         };
 
-        effectsfx = pkgs.rustPlatform.buildRustPackage rec {
+        effectsfx = pkgs.rustPlatform.buildRustPackage {
           pname = "eventsfx";
           version = "0.1.0";
           src = ./.;
@@ -27,8 +27,18 @@
             lockFile = ./Cargo.lock;
           };
 
+          preBuild = ''
+            substituteInPlace src/main.rs --replace-fail "/usr/share/eventsfx/audio" "$out/share/eventsfx/audio"
+          '';
+
           postInstall = ''
-            install -Dm 644 $src/audio/* -t $out/share/eventsfx/audio/
+            mkdir -p $out/share/eventsfx/audio
+            install -Dvm 644 $src/audio/* -t $out/share/eventsfx/audio/
+
+            if [ ! -d "$out/share/eventsfx/audio" ] || [ -z "$(ls -A $out/share/eventsfx/audio)" ]; then
+              echo "Failed to copy audio files or directory is empty"
+              exit 1
+            fi
           '';
 
           buildInputs = with pkgs; [
