@@ -1,0 +1,6 @@
+{
+    "uuid": "eventsfx@eventsfx",
+    "name": "eventsfx fullscreen bridge",
+    "description": "meow",
+    "shell-version": ["45", "46", "47", "48", "49", "50"]
+}

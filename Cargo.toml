@@ -6,9 +6,18 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dirs = "4.0"
-input = "0.8"
+anyhow = "1.0.104"
+dirs = "7.0"
+futures-lite = { version = "2.6.1", optional = true }
+input = "0.10"
 libc = "0.2"
-rodio = "0.16"
-log = "0.4"
-simple-logging = "2.0"
+rodio = "0.23"
+rustix = { version = "1.1.5", features = ["event"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+zbus = { version = "5", default-features = false, features = ["blocking-api", "async-io"], optional = true }
+
+[features]
+gnome = ["dep:zbus", "dep:futures-lite"]
